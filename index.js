@@ -4,7 +4,7 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
-const PORT = 3000; // Set your desired port number here
+const PORT = process.env.PORT || 3000; // Set your desired port number here
 
 app.use(cors());
 
