@@ -12,10 +12,11 @@ app.get("/yt", async function (req, res) {
   const { url, type } = req.query;
 
   if (!url) return res.json({ error: "No url provided" });
-  if (!type) return res.json({ error: "Use mp3 or mp4 only for type." });
+  if (!type || (type !== "mp3" && type !== "mp4")) return res.json({ error: "Use mp3 or mp4 only for type." });
 
   let filter;
   let format;
+  let quality = 'lowest';
 
   switch (type) {
     case "mp4":
@@ -26,6 +27,7 @@ app.get("/yt", async function (req, res) {
     case "mp3":
       filter = 'audioonly';
       format = 'mp3';
+      quality = 'highestaudio'; // Set quality to highest audio for mp3
       break;
 
     default:
@@ -38,7 +40,7 @@ app.get("/yt", async function (req, res) {
     let options = {
       filter: filter,
       format: format,
-      quality: 'lowestvideo' // Set default quality to lowest video
+      quality: quality // Use the correct quality setting
     };
 
     const stream = ytdl(url, options);
